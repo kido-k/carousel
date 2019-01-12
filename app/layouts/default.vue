@@ -5,6 +5,10 @@
 </template>
 
 <style>
+ul {
+  list-style: none;
+}
+
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;

@@ -27,6 +27,11 @@ export default {
     Carousel,
     Main,
     Footer
+  },
+  async fetchData({ store }) {
+    console.log('imgs')
+    let imgs = await imageApi.getCarouselImage()
+    store.commit('addCarouselImage', imgs)
   }
 }
 </script>

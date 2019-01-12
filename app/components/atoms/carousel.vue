@@ -1,30 +1,40 @@
 <template>
   <div class="carousel">
-    <a href="/">
-      <img
-        :src="`${setOpenedImg(position)}`"
-        alt="">
-    </a>
-    <h3>Position: {{ position }}</h3>
+    <transition-group
+      :name="transition_name"
+      tag="div">
+      <div
+        v-for="(img, idx) in img_list"
+        v-show="idx == position"
+        :key="img">
+        <a
+          href="/">
+          <img
+            :src="`${setOpenedImg(img)}`"
+            :alt="img">
+        </a>
+      </div>
+    </transition-group>
     <div class="navibar">
       <div>
-        <transition name="slide">
-          <button
-            class="navi left"
-            @click="prevPosition">＜</button>
-        </transition>
+        <button
+          class="navi left"
+          @click="prevPosition">＜</button>
       </div>
       <div>
         <button
           class="navi right"
           @click="nextPosition">＞</button>
       </div>
-      <div
-        class = "indicator">
-        <div
-          v-for="(img, idx) in img_list"
-          :key="idx"
-          :class="`${position === idx ? 'active dot' : 'dot'}`"/>
+      <div>
+        <transition-group
+          tag="ul"
+          class = "indicator">
+          <li
+            v-for="(img, idx) in img_list"
+            :key="img"
+            :class="`${position === idx ? 'active dot' : 'dot'}`"/>
+        </transition-group>
       </div>
     </div>
   </div>
@@ -75,45 +85,37 @@ img {
 .active {
   background-color: red;
 }
-/* .v-enter {
-  opacity: 0;
+.next-enter-active,
+.next-leave-active,
+.prev-enter-active,
+.prev-leave-active {
+  transition: all 0.4s;
 }
-.v-enter-to {
-  opacity: 1;
+.next-enter,
+.prev-leave {
+  transform: translateX(150%);
 }
-.v-enter-active {
-  transition: opacity 300ms ease-out;
+.next-leave,
+.prev-enter {
+  transform: translateX(-150%);
 }
-.v-leave {
-  opacity: 1;
-}
-.v-leave-to {
-  opacity: 0;
-}
-.v-leave-active {
-  transition: opacity 300ms ease-out;
-} */
 </style>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  // data: function() {
-  //   return {
-  //     image_src: require('~/assets/img/toppage/1_img1.png')
-  //   }
-  // },
   computed: {
     ...mapGetters({
+      transition_name: 'main/getTransitionName',
       position: 'main/getPosition',
       img_list: 'main/getImageList'
     })
   },
   methods: {
     ...mapActions('main', ['nextPosition', 'prevPosition']),
-    setOpenedImg(pos) {
-      return require('~/assets/img/toppage/' + pos + '_img.png')
+    setOpenedImg(img) {
+      return require('~/assets/img/toppage/' + img + '.png')
     }
   }
 }
