@@ -1,65 +1,52 @@
 <template>
   <section class="container">
-    <div>
-      <logo/>
-      <h1 class="title">
-        challange
-      </h1>
-      <h2 class="subtitle">
-        My stunning Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green">Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey">GitHub</a>
-      </div>
+    <div class="header">
+      <Header/>
+    </div>
+    <div class="carousel">
+      <Carousel/>
+    </div>
+    <div class="main">
+      <Main/>
+    </div>
+    <div class="footer">
+      <Footer/>
     </div>
   </section>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import Header from '~/components/atoms/header.vue'
+import Carousel from '~/components/atoms/carousel.vue'
+import Main from '~/components/atoms/main.vue'
+import Footer from '~/components/atoms/Footer.vue'
 
 export default {
   components: {
-    Logo
+    Header,
+    Carousel,
+    Main,
+    Footer
   }
 }
 </script>
 
 <style>
-.container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+.conteiner {
+  min-width: 1020px;
+  width: 100%;
+  overflow: hidden;
 }
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
+.header {
+  margin: 5px 0 5px 0;
 }
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
+.carousel {
+  margin: 5px 0 5px 0;
 }
-
-.links {
-  padding-top: 15px;
+.main {
+  margin: 5px 0 5px 0;
+}
+.footer {
+  margin: 5px 0 5px 0;
 }
 </style>
