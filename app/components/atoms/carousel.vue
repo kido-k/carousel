@@ -1,12 +1,9 @@
 <template>
   <div class="carousel">
-    <div>
-      <button
-        @click="autoSlide">check</button>
-    </div>
     <ul
       :style="{width:img_width + 'px',
-               height:img_height + 'px',}"
+               height:imgHeight + 'px',
+               marginLeft:calcImgMaginLeft + 'px'}"
       class="imagedata"
     >
       <li
@@ -14,8 +11,11 @@
         :key="img">
         <img
           :src="`${setOpenedImg(img)}`"
-          :alt="`${img}`">
-    </li></ul>
+          :alt="`${img}`"
+          :style="{height:imgHeight + 'px',
+                   width:imgWidth + 'px'}">
+      </li>
+    </ul>
     <div class="navibar">
       <div>
         <button
@@ -28,14 +28,15 @@
           @click="nextPosition">＞</button>
       </div>
       <div>
-        <transition-group
-          tag="ul"
+        <ul
+          :style="{width:indWidth + 'px',
+                   marginLeft:calcIndiMaginLeft + 'px'}"
           class = "indicator">
           <li
             v-for="(img, idx) in img_list"
             :key="img"
             :class="`${position === idx ? 'active dot' : 'dot'}`"/>
-        </transition-group>
+        </ul>
       </div>
     </div>
   </div>
@@ -46,7 +47,6 @@
   width: 100%;
   min-width: 1020px;
   max-width: 1890px;
-  height: 350px;
   margin: 0;
   background-color: white;
   overflow: hidden;
@@ -55,11 +55,10 @@
   display: flex;
   margin: 0;
   padding: 0;
+  transition: margin-left 1s ease;
 }
 .navibar {
   height: 50px;
-  width: 30%;
-  margin: 0 35% 0 35%;
 }
 .navi {
   position: absolute;
@@ -72,8 +71,12 @@
   left: 5%;
 }
 .indicator {
+  width: 100%;
+  /* padding: 0 30%; */
+  margin: auto;
   display: flex;
   justify-content: space-between;
+  padding: 0;
 }
 .dot {
   background-color: lightgray;
@@ -85,26 +88,18 @@
 .active {
   background-color: rgb(255, 147, 147);
 }
-.next-enter-active,
-.next-leave-active,
-.prev-enter-active,
-.prev-leave-active {
-  transition: all 0.4s;
-}
-.next-enter,
-.prev-leave {
-  transform: translateX(150%);
-}
-.next-leave,
-.prev-enter {
-  transform: translateX(-150%);
-}
 </style>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  data: function() {
+    return {
+      width: window.innerWidth,
+      height: window.innerHeight
+    }
+  },
   computed: {
     ...mapGetters({
       transition_name: 'main/getTransitionName',
@@ -112,18 +107,43 @@ export default {
       img_list: 'main/getImageList',
       img_width: 'main/getImageWidth',
       img_height: 'main/getImageHight'
-      // calcImgWidth(img_width) {
-      //   return img_width / window.parent.screen.width
-      // },
-      // calcImgHeight(img_height) {
-      //   return img_height / window.parent.screen.height
-      // }
-    })
+    }),
+    imgHeight: function() {
+      return (
+        this.$store.state.main.img_size.height *
+        (this.width / (this.$store.state.main.img_size.width / 3))
+      )
+    },
+    imgWidth: function() {
+      return this.width
+    },
+    calcImgMaginLeft: function() {
+      return -1 * this.width * this.$store.state.main.position
+    },
+    calcIndiMaginLeft: function() {
+      return this.width * 0.35
+    },
+    indWidth: function() {
+      return this.width * 0.3
+    }
+  },
+  mounted() {
+    this.$store.dispatch('main/autoSlide')
+  },
+  created: function() {
+    window.addEventListener('resize', this.handleResize, false)
+  },
+  beforeDestroy: function() {
+    window.removeEventListener('resize', this.handleResize, false)
   },
   methods: {
     ...mapActions('main', ['nextPosition', 'prevPosition', 'autoSlide']),
     setOpenedImg(img) {
       return require('~/assets/img/toppage/' + img + '.png')
+    },
+    handleResize: function() {
+      this.width = window.innerWidth
+      this.height = window.innerHeight
     }
   }
 }

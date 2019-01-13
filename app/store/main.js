@@ -2,12 +2,13 @@ export const state = () => ({
   img_size: { width: 1890 * 3, height: 300 },
   img_list: ['0_img', '1_img', '2_img'],
   position: 0,
-  transition_name: 'next'
+  transition_name: 'next',
+  window_size: { width: 0, height: 0 }
 })
 
 export const getters = {
-  getImageWidth: state => state.img_size.width / window.parent.screen.width,
-  getImageHight: state => state.img_size.height / window.parent.screen.height,
+  getImageWidth: state => state.img_size.width,
+  getImageHight: state => state.img_size.height,
   getImageList: state => state.img_list,
   getPosition: state => state.position,
   getTransitionName: state => state.transition_name
@@ -42,6 +43,6 @@ export const actions = {
   autoSlide({ commit }) {
     setInterval(() => {
       commit('nextPosition')
-    }, 2000)
+    }, 4000)
   }
 }
