@@ -4,18 +4,22 @@
       <button
         @click="autoSlide">check</button>
     </div>
-    <ul
-      :style="{width:img_width + 'px',
-               height:img_height + 'px',}"
-      class="imagedata"
-    >
-      <li
-        v-for="img in img_list"
+    <transition-group
+      :name="transition_name"
+      class="image"
+      tag="div">
+      <div
+        v-for="(img, idx) in img_list"
+        v-show="idx == position"
         :key="img">
-        <img
-          :src="`${setOpenedImg(img)}`"
-          :alt="`${img}`">
-    </li></ul>
+        <a
+          href="/">
+          <img
+            :src="`${setOpenedImg(img)}`"
+            :alt="img">
+        </a>
+      </div>
+    </transition-group>
     <div class="navibar">
       <div>
         <button
@@ -47,14 +51,17 @@
   min-width: 1020px;
   max-width: 1890px;
   height: 350px;
-  margin: 0;
+  margin: 0 auto;
   background-color: white;
   overflow: hidden;
 }
-.imagedata {
+.image {
   display: flex;
-  margin: 0;
-  padding: 0;
+}
+img {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 .navibar {
   height: 50px;
@@ -109,15 +116,7 @@ export default {
     ...mapGetters({
       transition_name: 'main/getTransitionName',
       position: 'main/getPosition',
-      img_list: 'main/getImageList',
-      img_width: 'main/getImageWidth',
-      img_height: 'main/getImageHight'
-      // calcImgWidth(img_width) {
-      //   return img_width / window.parent.screen.width
-      // },
-      // calcImgHeight(img_height) {
-      //   return img_height / window.parent.screen.height
-      // }
+      img_list: 'main/getImageList'
     })
   },
   methods: {
