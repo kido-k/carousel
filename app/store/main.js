@@ -1,4 +1,5 @@
 export const state = () => ({
+  param: '',
   img_size: { width: 1890 * 3, height: 300 },
   img_list: ['0_img', '1_img', '2_img'],
   position: 0,
@@ -15,6 +16,10 @@ export const getters = {
 }
 
 export const mutations = {
+  setInitParam(param) {
+    state.param = param
+    console.log(param)
+  },
   nextPosition(state) {
     state.transition_name = 'next'
     if (state.position < state.img_list.length - 1) {
@@ -34,6 +39,10 @@ export const mutations = {
 }
 
 export const actions = {
+  async getInitParam({ commit }) {
+    const param = await this.$axios.$get(`/param.json`)
+    commit('setInitParam', param)
+  },
   nextPosition({ commit }) {
     commit('nextPosition')
   },

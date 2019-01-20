@@ -45,8 +45,6 @@
 <style scoped>
 .carousel {
   width: 100%;
-  min-width: 1020px;
-  max-width: 1890px;
   margin: 0;
   background-color: white;
   overflow: hidden;
@@ -72,7 +70,6 @@
 }
 .indicator {
   width: 100%;
-  /* padding: 0 30%; */
   margin: auto;
   display: flex;
   justify-content: space-between;
@@ -95,9 +92,11 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data: function() {
-    return {
-      width: window.innerWidth,
-      height: window.innerHeight
+    if (process.browser) {
+      return {
+        width: window.innerWidth,
+        height: window.innerHeight
+      }
     }
   },
   computed: {
@@ -131,10 +130,14 @@ export default {
     this.$store.dispatch('main/autoSlide')
   },
   created: function() {
-    window.addEventListener('resize', this.handleResize, false)
+    if (process.browser) {
+      window.addEventListener('resize', this.handleResize, false)
+    }
   },
   beforeDestroy: function() {
-    window.removeEventListener('resize', this.handleResize, false)
+    if (process.browser) {
+      window.removeEventListener('resize', this.handleResize, false)
+    }
   },
   methods: {
     ...mapActions('main', ['nextPosition', 'prevPosition', 'autoSlide']),
@@ -142,8 +145,10 @@ export default {
       return require('~/assets/img/toppage/' + img + '.png')
     },
     handleResize: function() {
-      this.width = window.innerWidth
-      this.height = window.innerHeight
+      if (process.browser) {
+        this.width = window.innerWidth
+        this.height = window.innerHeight
+      }
     }
   }
 }

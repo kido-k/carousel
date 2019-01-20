@@ -4,7 +4,9 @@
       <Header/>
     </div>
     <div class="carousel">
-      <Carousel/>
+      <no-ssr>
+        <Carousel/>
+      </no-ssr>
     </div>
     <div class="main">
       <Main/>
@@ -33,7 +35,6 @@ export default {
 
 <style>
 .conteiner {
-  min-width: 1020px;
   width: 100%;
   overflow: hidden;
 }

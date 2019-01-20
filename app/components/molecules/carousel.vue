@@ -11,8 +11,6 @@
 <style scoped>
 .carousel {
   width: 100%;
-  min-width: 1020px;
-  max-width: 1890px;
   height: 300px;
   margin: 0 auto;
   background-color: white;
